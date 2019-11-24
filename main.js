@@ -21,8 +21,11 @@ while (done == false) {
     var limit = readline.question('Select a limit or enter DONE: ');
 
     if (Object.keys(possible_limits).indexOf(limit) > -1) {
-        console.log(true);
+        var limit_value = readline.question('Limit value: ');
+        possible_limits[limit] = limit_value;
+    } else if (limit == 'DONE' || limit == 'done' || limit == 'Done') {
+        done = true;
     }
 }
 
-console.log('CPU limit is - ' + limit);
+console.log('CPU limit is - ' + possible_limits['CPU_temp']);
