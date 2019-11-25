@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 var sys = require('systeminformation');
-var readline = require('readline-sync');
+
+var functions = require('./functions.js');
 
 // List of available system limits
 var possible_limits = { CPU_temp: 120, MEM_free: 1024 };
@@ -15,17 +16,16 @@ Object.keys(possible_limits).forEach(element => {
 });
 process.stdout.write('\n\n');
 
-var done = false;
-while (done == false) {
-    // Select limit
-    var limit = readline.question('Select a limit or enter DONE: ');
+// Ask for email details
+transporter = functions.getEmailInput();
 
-    if (Object.keys(possible_limits).indexOf(limit) > -1) {
-        var limit_value = readline.question('Limit value: ');
-        possible_limits[limit] = limit_value;
-    } else if (limit == 'DONE' || limit == 'done' || limit == 'Done') {
-        done = true;
-    }
-}
+// Ask for limits
+possible_limits = functions.getLimitInput(possible_limits);
 
-console.log('CPU limit is - ' + possible_limits['CPU_temp']);
+process.stdout.write('SETUP COMPLETED\n');
+process.stdout.write('Active limits: ');
+Object.keys(possible_limits).forEach(element => {
+    process.stdout.write(element + ' = ' + possible_limits[element] + '  ');
+});
+process.stdout.write('\n')
+process.stdout.write('SERVICE RUNNING\n');
