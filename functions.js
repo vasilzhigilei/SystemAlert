@@ -15,7 +15,7 @@ exports.getEmailInput = function() {
         }
     });
     return transporter;
-}
+};
 
 exports.getLimitInput = function(possible_limits) {
     var done = false;
@@ -32,3 +32,20 @@ exports.getLimitInput = function(possible_limits) {
     }
     return possible_limits;
 };
+
+exports.sendEmail = function(transporter, limit_array) {
+    var mailOptions = {
+        from: transporter.email_user,
+        to: transporter.email_user,
+        subject: 'LIMIT REACHED - ' + limit_array[0],
+        text: 'A set system limit was reached\n'
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
